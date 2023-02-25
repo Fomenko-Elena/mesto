@@ -1,0 +1,7 @@
+.elemant__block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    margin: 20px 20px 26px 21px;
+}

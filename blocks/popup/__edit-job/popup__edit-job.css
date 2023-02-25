@@ -1,0 +1,13 @@
+.popup__edit-job {
+    margin-top: 30px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16.94px;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    height: 27px;
+}
+
+.popup__edit-job:focus-visible {
+    outline: none;
+}
