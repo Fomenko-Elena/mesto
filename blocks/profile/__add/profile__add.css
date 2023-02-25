@@ -10,6 +10,7 @@
     border-radius: 2px;
     border: 2px solid #FFFFFF;
     transition: opacity 0.1s linear;
+    cursor: pointer;
 }
 
 .profile__add:hover {
@@ -19,7 +20,7 @@
 @media screen and (max-width: 767px) {
     .profile__add {
         margin-left: 0;
-        margin-top: 36px;
+        margin-top: 33px;
         width: 282px;
     }
 }

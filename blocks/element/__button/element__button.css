@@ -5,6 +5,7 @@
     background-color: #FFFFFF;
     border: none;
     transition: color 0.1s linear;
+    cursor: pointer;
 }
 
 .element__button:hover {

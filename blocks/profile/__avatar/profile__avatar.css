@@ -5,11 +5,11 @@
     object-position: center center;
 
     border-radius: 100%;
-    margin: 3.75px 31.25px 3.75px 0px;
+    margin: 3.75px 30.25px 3.75px 0px;
 }
 
 @media screen and (max-width: 767px) {
     .profile__avatar {
-        margin: 3.75px 26.25px 3.75px;
+        margin: 5px 26.25px 3.75px;
     }
 }
