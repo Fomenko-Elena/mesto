@@ -6,70 +6,53 @@ const profileJobElement = document.querySelector('.profile__job');
 editProfileButton.addEventListener('click', openEditProfilePopup);
 addProfileItemButton.addEventListener('click', openAddItemPopup);
 
-const popupTemplate = document.querySelector('#popupTemplate');
-const popupInvisibleContainerTemplate = document.querySelector('#popupInvisibleContainerTemplate');
 const pageElement = document.querySelector('.page');
 
-function openPopup(popupTemplate, popupElements, elementsAttachedHandler) {
-    const popup = popupTemplate.content.firstElementChild.cloneNode(true);
-    popup.closePopup = function() {
-        popup.addEventListener('transitionend', () => popup.remove());
-        popup.classList.remove('popup_opened');
+function openPopup(popupName, setupPopupHandler) {
+    const popup = document.querySelector(popupName);
+    let isInitialized = popup.hasOwnProperty('__isInitialized') && popup.__isInitialized || false;
+    if (isInitialized !== true) {
+        popup.__isInitialized = true;
+        popup.classList.toggle('popup_initialized');
+        popup.closePopup = function() {
+            popup.classList.toggle('popup_opened');
+        }
+
+        const close = popup.querySelector('.popup__close');
+        close.addEventListener('click', () => popup.closePopup());
     }
 
-    const close = popup.querySelector('.popup__close');    
-    close.addEventListener('click', () => popup.closePopup());
+    setupPopupHandler(popup, isInitialized);
 
-    const container = popup.querySelector('.popup__container');
-    popupElements.forEach(node => container.insertBefore(node, null));
-
-    elementsAttachedHandler(popup);
-
-    pageElement.insertBefore(popup, null);
-
-    requestAnimationFrame(() => popup.classList.add('popup_opened'));
+    popup.classList.toggle('popup_opened')
 }
 
-const formPopupTemplate = document.querySelector('#formPopupTemplate');
-function openFormPopup(formTitle, formActionName, formElementsTemplate, elementsAttachedHandler, submitHandler) {
-    const formNodes = cloneTemplateChildNodes(formPopupTemplate);
+function openFormPopup(popupName, setupPopupHandler, submitHandler) {
     openPopup(
-        popupTemplate,
-        formNodes, 
-        popup => {
-        const form = popup.querySelector('.popup__form');
-
-        const title = popup.querySelector('.popup__title');
-        title.textContent = formTitle;
-
-        const submit = form.querySelector('.popup__submit');
-        submit.textContent = formActionName;
-
-        const formElements = cloneTemplateChildNodes(formElementsTemplate);
-        formElements.forEach(node => form.insertBefore(node, submit));
-
-        form.addEventListener(
-            'submit', 
-            evnt => {
-                submitHandler(evnt, form);    
-                popup.closePopup();
-            });
-
-        elementsAttachedHandler(form);
-    });
+        popupName,
+        (popup, isInitialized) => {
+            if (!isInitialized) {
+                const form = popup.querySelector('.popup__form');
+                const submit = form.querySelector('.popup__submit');
+                form.addEventListener(
+                    'submit', 
+                    evnt => {
+                        submitHandler(evnt, form);    
+                        popup.closePopup();
+                    });
+            }
+            setupPopupHandler(popup, isInitialized);
+        });
 }
 
-const editProfileFormTemplate = document.querySelector('#editProfileFormTemplate');
 function openEditProfilePopup() {
     openFormPopup(
-        'Редактировать профиль', 
-        'Сохранить', 
-        editProfileFormTemplate, 
-        form => {
-            const nameInput = form.querySelector('.popup__input_edit_name');
+        '.popup_edit-profile', 
+        popup => {
+            const nameInput = popup.querySelector('.popup__input_edit_name');
             nameInput.value = profileNameElement.textContent;
 
-            const jobInput = form.querySelector('.popup__input_edit_job');
+            const jobInput = popup.querySelector('.popup__input_edit_job');
             jobInput.value = profileJobElement.textContent;
 
         },
@@ -85,12 +68,9 @@ function openEditProfilePopup() {
     );
 }
 
-const addItemFormTemplate = document.querySelector('#addItemFormTemplate');
 function openAddItemPopup() {
     openFormPopup(
-        'Новое место', 
-        'Создать', 
-        addItemFormTemplate, 
+        '.popup_add-item', 
         () => {},
         (evnt, form) => {
             const nameInput = form.querySelector('.popup__input_edit_name');
@@ -106,12 +86,9 @@ function openAddItemPopup() {
     );
 }
 
-const previewImageTemplate = document.querySelector('#previewImageTemplate');
 function openPreviewPopup(imageUrl, text) {
-    const previewNodes = cloneTemplateChildNodes(previewImageTemplate);
     openPopup(
-        popupInvisibleContainerTemplate,
-        previewNodes, 
+        '.popup_preview',
         popup => {
             const image = popup.querySelector('.popup__image');
             image.src = imageUrl;
@@ -120,13 +97,6 @@ function openPreviewPopup(imageUrl, text) {
             title.textContent = text;
     });
 }
-
-function cloneTemplateChildNodes(tenpalte) {
-    const nodes = [];
-    tenpalte.content.childNodes.forEach(x => nodes.push(x.cloneNode(true)));
-    return nodes;
-}
-
 
 const elementList = document.querySelector('.element .element__list');
 const elementTemplate = document.querySelector('#elementTemplate');

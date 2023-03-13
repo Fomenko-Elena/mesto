@@ -33,6 +33,41 @@
     <footer class="footer">
       <p class="footer__copyright">© 2023 Mesto Russia</p>
     </footer>
+
+    <div class="popup popup_edit-profile">
+      <div class="popup__container">
+        <button class="popup__close" type="button"></button>
+        <h2 class="popup__title">Редактировать профиль</h2>
+        <form class="popup__form" name="popup-form">
+          <input class="popup__input popup__input_edit_name" name="edit-name" type="text">
+          <input class="popup__input popup__input_edit_job" name="edit-job" type="text">
+          <button class="popup__submit" type="submit">Сохранить</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="popup popup_add-item">
+      <div class="popup__container">
+        <button class="popup__close" type="button"></button>
+        <h2 class="popup__title">Новое место</h2>
+        <form class="popup__form" name="popup-form">
+          <input class="popup__input popup__input_edit_name" name="edit-name" type="text" placeholder="Название">
+          <input class="popup__input popup__input_edit_link" name="edit-link" type="text" placeholder="Ссылка на картинку">
+          <button class="popup__submit" type="submit">Создать</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="popup popup_preview">
+      <div class="popup__container popup__container_invisible">
+        <button class="popup__close" type="button"></button>
+        <figure class="popup__image-preview">
+          <img class="popup__image">
+          <figcaption class="popup__image-title"></figcaption>
+        </figure>
+      </div>
+    </div>
+
   </div>
 
   <template id="elementTemplate">
@@ -44,46 +79,6 @@
         <button class="element__button" type="button"></button>
       </div>
     </li>
-  </template>
-
-  <template id="popupTemplate">
-    <div class="popup">
-      <div class="popup__container">
-        <button class="popup__close" type="button"></button>
-      </div>
-    </div>
-  </template>
-
-  <template id="popupInvisibleContainerTemplate">
-    <div class="popup">
-      <div class="popup__container popup__container_invisible">
-        <button class="popup__close" type="button"></button>
-      </div>
-    </div>
-  </template>
-
-  <template id="formPopupTemplate">
-    <h2 class="popup__title"></h2>
-    <form class="popup__form" name="popup-form">
-      <button class="popup__submit" type="submit"></button>
-    </form>
-  </template>
-
-  <template id="editProfileFormTemplate">
-    <input class="popup__input popup__input_edit_name" name="edit-name" type="text">
-    <input class="popup__input popup__input_edit_job" name="edit-job" type="text">
-  </template>
-
-  <template id="addItemFormTemplate">
-    <input class="popup__input popup__input_edit_name" name="edit-name" type="text" placeholder="Название">
-    <input class="popup__input popup__input_edit_link" name="edit-link" type="text" placeholder="Ссылка на картинку">
-  </template>
-
-  <template id="previewImageTemplate">
-    <figure class="popup__image-preview">
-      <img class="popup__image">
-      <figcaption class="popup__image-title"></figcaption>
-    </figure>
   </template>
 
   <script src="./scripts/index.js"></script>

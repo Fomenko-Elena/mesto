@@ -1,0 +1,3 @@
+.popup_initialized {
+    transition: opacity 0.4s, visibility 0.4s;
+}
