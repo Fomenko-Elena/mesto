@@ -1,12 +1,12 @@
 .popup__close {
-    position: fixed;
+    position: absolute;
     width: 32px;
     height: 32px;
     background-image: url(./../../../images/close.svg);
     background-color: transparent;
     border: none;
-    left: calc(50% + 223px);
-    top: calc(50% - 206px);
+    right: -40px;
+    top: -40px;
     transition: opacity 0.1s linear;
     cursor: pointer;
 }
@@ -20,7 +20,7 @@
         width: 20px;
         height: 20px;
         background-size: contain;
-        left: calc(50% + 121px);
-        top: calc(50% - 197px);
+        right: 0;
+        top: -36px;
     }
 }
