@@ -32,10 +32,8 @@ const previewPopupImageTitle = previewPopup.querySelector('.popup__image-title')
 const elementsContainer = document.querySelector('.element .element__list');
 const elementTemplate = document.querySelector('#elementTemplate');
 
-let activePopup = null;
 
 function openPopup(popup) {
-    activePopup = popup;
     popup.classList.add('popup_opened');
 
     document.addEventListener('keyup', handleKeyUp);
@@ -43,30 +41,34 @@ function openPopup(popup) {
 
 function closePopup(popup) {
     popup.classList.remove('popup_opened');
-    activePopup = null;
 
     document.removeEventListener('keyup', handleKeyUp);
 }
 
 function handleKeyUp(evt) {
-    if (activePopup == null) return;
     if (evt.code !== 'Escape') return;
-    closePopup(activePopup);
+    closePopup(document.querySelector('.popup_opened'));
 }
 
-function handleClick() {
-    if (activePopup == null) return;
-    closePopup(activePopup);
+function initializePopupMouseHandkers() {
+    const popupList = Array.from(document.querySelectorAll('.popup'));
+
+    popupList.forEach(popup => {
+        popup.addEventListener('mousedown', (evt) => {
+            if (evt.target.classList.contains('popup')) {
+                closePopup(popup)
+            }
+        })
+    }); 
 }
-document.addEventListener('click', handleClick);
 
-function openProfilePopup(evt) {
-    evt.stopPropagation();
+initializePopupMouseHandkers();
 
-    profilePopupNameInput.defaultValue = profilePopupNameInput.value = profileNameElement.textContent;
-    profilePopupJobInput.defaultValue = profilePopupJobInput.value = profileJobElement.textContent;
-
+function openProfilePopup() {
     profilePopupForm.reset();
+
+    profilePopupNameInput.value = profileNameElement.textContent;
+    profilePopupJobInput.value = profileJobElement.textContent;
 
     openPopup(profilePopup);
 }
@@ -83,17 +85,10 @@ function handleEditProfileSubmit(event) {
 profileContainer.addEventListener('click', (evt) => evt.stopPropagation());
 profilePopupForm.addEventListener('submit', handleEditProfileSubmit);
 profileCloseButton.addEventListener('click', () => closePopup(profilePopup));
-editProfileButton.addEventListener('click', (evt) => openProfilePopup(evt));
+editProfileButton.addEventListener('click', openProfilePopup);
 
-
-function clearElementPopup() {
+function openElementPopup() {    
     elementPopupForm.reset();
-}
-
-function openElementPopup(evt) {
-    evt.stopPropagation();
-    
-    clearElementPopup();
     openPopup(elementPopup);
 }
 
@@ -106,18 +101,15 @@ function handleElementPopupSubmit(event) {
     });
 
     closePopup(elementPopup);
-    clearElementPopup();
 }
 
 elementContainer.addEventListener('click', (evt) => evt.stopPropagation());
 elementPopupForm.addEventListener('submit', handleElementPopupSubmit);
 elementPopupCloseButton.addEventListener('click', () => closePopup(elementPopup));
-addProfileItemButton.addEventListener('click', (evt)  => openElementPopup(evt));
+addProfileItemButton.addEventListener('click', openElementPopup);
 
 
-function openPreviewPopup(imageUrl, text, evt) {
-    evt.stopPropagation();
-
+function openPreviewPopup(imageUrl, text) {
     previewPopupImage.src = imageUrl;
     previewPopupImage.alt = text;
 
@@ -151,7 +143,7 @@ function createIten(descriptor) {
     const image = result.querySelector('.element__picture');
     image.src = link;
     image.alt = name;
-    image.addEventListener('click', (evt) => openPreviewPopup(link, name, evt));
+    image.addEventListener('click', (evt) => openPreviewPopup(link, name));
 
     const text = result.querySelector('.element__text');
     text.textContent = name;
@@ -160,13 +152,12 @@ function createIten(descriptor) {
     elementRemove.addEventListener('click', () => result.remove());
 
     const button = result.querySelector('.element__button');
-    button.addEventListener('click', () => likeItem(result));
+    button.addEventListener('click', () => likeItem(button));
 
     return result;
 }
 
-function likeItem(item) {
-    const button = item.querySelector('.element__button');
+function likeItem(button) {
     button.classList.toggle('element__button_actve');
 }
 

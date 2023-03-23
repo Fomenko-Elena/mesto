@@ -6,8 +6,6 @@ const showInputError = (formElement, inputElement, errorMessage, settings) => {
 
     errorElement.textContent = errorMessage;
     errorElement.classList.add(settings.errorClass);
-
-    buttonElement.classList.add(settings.inactiveButtonClass);
   };
   
   const hideInputError = (formElement, inputElement, settings) => {
@@ -18,8 +16,6 @@ const showInputError = (formElement, inputElement, errorMessage, settings) => {
 
     errorElement.classList.remove(settings.errorClass);
     errorElement.textContent = '';
-
-    buttonElement.classList.remove(settings.inactiveButtonClass);
   }; 
   
 
@@ -38,8 +34,10 @@ const hasInvalidInput = (inputList) => {
 const updateButtonState = (inputList, buttonElement, settings) => {
   if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(settings.inactiveButtonClass);
+    buttonElement.setAttribute('disabled', 'disabled');
   } else {
     buttonElement.classList.remove(settings.inactiveButtonClass);
+    buttonElement.removeAttribute('disabled');
   }
 };
 
