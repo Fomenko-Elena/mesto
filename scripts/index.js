@@ -65,10 +65,10 @@ function initializePopupMouseHandkers() {
 initializePopupMouseHandkers();
 
 function openProfilePopup() {
-    profilePopupForm.reset();
-
     profilePopupNameInput.value = profileNameElement.textContent;
     profilePopupJobInput.value = profileJobElement.textContent;
+
+    profilePopupForm.dispatchEvent(new Event('validateForm'));
 
     openPopup(profilePopup);
 }
@@ -87,8 +87,11 @@ profilePopupForm.addEventListener('submit', handleEditProfileSubmit);
 profileCloseButton.addEventListener('click', () => closePopup(profilePopup));
 editProfileButton.addEventListener('click', openProfilePopup);
 
-function openElementPopup() {    
+function openElementPopup() {
     elementPopupForm.reset();
+
+    elementPopupForm.dispatchEvent(new Event('validateForm'));
+
     openPopup(elementPopup);
 }
 

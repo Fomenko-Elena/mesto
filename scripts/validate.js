@@ -1,6 +1,5 @@
 const showInputError = (formElement, inputElement, errorMessage, settings) => {
     const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
-    const buttonElement = formElement.querySelector(settings.submitButtonSelector);
 
     inputElement.classList.add(settings.inputErrorClass);
 
@@ -10,7 +9,6 @@ const showInputError = (formElement, inputElement, errorMessage, settings) => {
   
   const hideInputError = (formElement, inputElement, settings) => {
     const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
-    const buttonElement = formElement.querySelector(settings.submitButtonSelector);
 
     inputElement.classList.remove(settings.inputErrorClass);
 
@@ -53,7 +51,7 @@ const setEventListeners = (formElement, settings) => {
       });
     });
 
-    formElement.addEventListener('reset',() => {
+    formElement.addEventListener('validateForm',() => {
         inputList.forEach((inputElement) => {
             hideInputError(formElement, inputElement, settings);
         });
