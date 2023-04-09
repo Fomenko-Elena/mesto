@@ -1,3 +1,6 @@
+import Card from "./Card.js";
+import FormValidator from "./FormValidator.js";
+
 const editProfileButton = document.querySelector('.profile__edit');
 const addProfileItemButton = document.querySelector('.profile__add');
 const profileNameElement = document.querySelector('.profile__name');
@@ -10,7 +13,6 @@ const profileCloseButton = profilePopup.querySelector('.popup__close');
 const profilePopupNameInput = profilePopup.querySelector('.popup__input_edit_name');
 const profilePopupJobInput = profilePopup.querySelector('.popup__input_edit_job');
 const profilePopupForm = profilePopup.querySelector('.popup__form');
-const profilePopupSubmitButton = profilePopup.querySelector('.popup__submit');
 
 
 const elementPopup = document.querySelector('.popup_add-item');
@@ -19,7 +21,6 @@ const elementPopupCloseButton = elementPopup.querySelector('.popup__close');
 const elementPopupNameInput = elementPopup.querySelector('.popup__input_edit_name');
 const elementPopupLinkInput = elementPopup.querySelector('.popup__input_edit_link');
 const elementPopupForm = elementPopup.querySelector('.popup__form');
-const elementPopupSubmitButton = elementPopup.querySelector('.popup__submit');
 
 
 const previewPopup = document.querySelector('.popup_preview');
@@ -30,7 +31,6 @@ const previewPopupImageTitle = previewPopup.querySelector('.popup__image-title')
 
 
 const elementsContainer = document.querySelector('.element .element__list');
-const elementTemplate = document.querySelector('#elementTemplate');
 
 
 function openPopup(popup) {
@@ -98,7 +98,7 @@ function openElementPopup() {
 function handleElementPopupSubmit(event) {
     event.preventDefault();
 
-    appendItemFirst({
+    appendCardFirst({
         name : elementPopupNameInput.value,
         link : elementPopupLinkInput.value
     });
@@ -112,11 +112,11 @@ elementPopupCloseButton.addEventListener('click', () => closePopup(elementPopup)
 addProfileItemButton.addEventListener('click', openElementPopup);
 
 
-function openPreviewPopup(imageUrl, text) {
-    previewPopupImage.src = imageUrl;
-    previewPopupImage.alt = text;
+function openPreviewPopup(name, link) {
+    previewPopupImage.src = link;
+    previewPopupImage.alt = name;
 
-    previewPopupImageTitle.textContent = text;
+    previewPopupImageTitle.textContent = name;
 
     openPopup(previewPopup);
 }
@@ -125,46 +125,27 @@ previewContainer.addEventListener('click', (evt) => evt.stopPropagation());
 previewPopupCloseButton.addEventListener('click', () => closePopup(previewPopup));
 
 
-function initializeItems(initialCards) {
-    initialCards.forEach(x => appendItem(x));
-}
-
-function appendItem(descriptor) {
-    const element = createIten(descriptor);
+function appendCard(cardData) {
+    const element = generateCard(cardData);
     elementsContainer.append(element);
 }
 
-function appendItemFirst(descriptor) {
-    const element = createIten(descriptor);
+function appendCardFirst(cardData) {
+    const element = generateCard(cardData);
     elementsContainer.prepend(element);
 }
 
-function createIten(descriptor) {
-    const { name, link } = descriptor;
-    const result = elementTemplate.content.firstElementChild.cloneNode(true);
-
-    const image = result.querySelector('.element__picture');
-    image.src = link;
-    image.alt = name;
-    image.addEventListener('click', (evt) => openPreviewPopup(link, name));
-
-    const text = result.querySelector('.element__text');
-    text.textContent = name;
-
-    const elementRemove = result.querySelector('.element__delete');
-    elementRemove.addEventListener('click', () => result.remove());
-
-    const button = result.querySelector('.element__button');
-    button.addEventListener('click', () => likeItem(button));
-
-    return result;
+function generateCard(cardData) {
+    const card = new Card(cardData, '#elementTemplate', openPreviewPopup);
+    return card.generateCard();
 }
 
-function likeItem(button) {
-    button.classList.toggle('element__button_actve');
+
+function initializeCards(initialCards) {
+    initialCards.forEach(x => appendCard(x));
 }
 
-initializeItems([
+initializeCards([
     {
         name: 'Архыз',
         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
@@ -190,3 +171,22 @@ initializeItems([
         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
     }
 ]);
+
+
+function enableValidation(settings) {
+    const formList = Array.from(document.querySelectorAll(settings.formSelector));
+
+    formList.forEach((formElement) => {
+        const formValidator = new FormValidator(settings, formElement);
+        formValidator.enableValidation();
+    });
+};
+
+enableValidation({
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__submit',
+    inactiveButtonClass: 'popup__submit_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+});
