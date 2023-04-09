@@ -1,8 +1,8 @@
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
 
-const editProfileButton = document.querySelector('.profile__edit');
-const addProfileItemButton = document.querySelector('.profile__add');
+const buttonOpenPopupProfile = document.querySelector('.profile__edit');
+const buttonOpenPopupCard = document.querySelector('.profile__add');
 const profileNameElement = document.querySelector('.profile__name');
 const profileJobElement = document.querySelector('.profile__job');
 
@@ -85,7 +85,7 @@ function handleEditProfileSubmit(event) {
 profileContainer.addEventListener('click', (evt) => evt.stopPropagation());
 profilePopupForm.addEventListener('submit', handleEditProfileSubmit);
 profileCloseButton.addEventListener('click', () => closePopup(profilePopup));
-editProfileButton.addEventListener('click', openProfilePopup);
+buttonOpenPopupProfile.addEventListener('click', openProfilePopup);
 
 function openElementPopup() {
     elementPopupForm.reset();
@@ -109,7 +109,7 @@ function handleElementPopupSubmit(event) {
 elementContainer.addEventListener('click', (evt) => evt.stopPropagation());
 elementPopupForm.addEventListener('submit', handleElementPopupSubmit);
 elementPopupCloseButton.addEventListener('click', () => closePopup(elementPopup));
-addProfileItemButton.addEventListener('click', openElementPopup);
+buttonOpenPopupCard.addEventListener('click', openElementPopup);
 
 
 function openPreviewPopup(name, link) {
