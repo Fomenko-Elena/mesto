@@ -1,9 +1,9 @@
 export default class Card {
-    constructor(cardData, templateSelector, cardClickHandler) {
+    constructor(cardData, templateSelector, handleCardClick) {
         this._name = cardData.name;
         this._link = cardData.link;
         this._elementTemplate = document.querySelector(templateSelector);
-        this._cardClickHandler = cardClickHandler;
+        this._cardClickHandler = handleCardClick;
     }
 
     generateCard() {
