@@ -34,10 +34,7 @@ const addCardPopup = new PopupWithForm({
     closeButtonSelector: '.popup__close',
     formSelector: '.popup__form',
     inputSelector: '.popup__input',
-    submitFormHandler: value => {
-        const element = section.renderItem(value);
-        section.addItem(element);
-    }
+    submitFormHandler: value => section.renderItem(value)
 });
 addCardPopup.setEventListeners();
 
@@ -73,9 +70,10 @@ const section = new Section(
                 link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
             }
         ],
-        renderer: (data) => {
+        renderer: data => {
             const card = new Card(data, '#elementTemplate', (name, link) => previewPopup.open(name, link));
-            return card.generateCard();
+            const element = card.generateCard();
+            section.addItem(element);
         }
     },
     '.element__list');

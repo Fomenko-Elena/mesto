@@ -10,13 +10,10 @@ export default class Section {
     }
 
     renderItem(itemData) {
-        return this._itemRenderer(itemData);
+        this._itemRenderer(itemData);
     }
 
     renderItems() {
-        this._items.forEach(item => {
-            const element = this.renderItem(item);
-            this._containerElement.append(element);
-        });
+        this._items.reverse().forEach(item => this.renderItem(item));
     }
 }
