@@ -7,35 +7,44 @@ export default class Card {
     }
 
     generateCard() {
-        const cardElement = this._createElement();
+        this._cardElement = this._createElement();
 
-        const image = cardElement.querySelector('.element__picture');
-        image.src = this._link;
-        image.alt = this._name;
-        image.addEventListener('click', () => this._handleCardClick());
+        this._imageElement = this._cardElement.querySelector('.element__picture');
+        this._imageElement.src = this._link;
+        this._imageElement.alt = this._name;
 
-        const text = cardElement.querySelector('.element__text');
-        text.textContent = this._name;
+        const textElement = this._cardElement.querySelector('.element__text');
+        textElement.textContent = this._name;
 
-        const elementRemove = cardElement.querySelector('.element__delete');
-        elementRemove.addEventListener('click', () => this._remove(cardElement));
+        this._deleteElement = this._cardElement.querySelector('.element__delete');
 
-        const button = cardElement.querySelector('.element__button');
-        button.addEventListener('click', () => this._like(button));
+        this._buttonElement = this._cardElement.querySelector('.element__button');
 
-        return cardElement;
+        this._setEventListeners();
+
+        return this._cardElement;
+    }
+
+    _setEventListeners() {
+        this._imageElement.addEventListener('click', () => this._handleCardClick());
+        this._deleteElement.addEventListener('click', () => this._remove());
+        this._buttonElement.addEventListener('click', () => this._like());
     }
 
     _createElement() {
         return this._elementTemplate.content.firstElementChild.cloneNode(true);
     }
 
-    _like(button) {
-        button.classList.toggle('element__button_actve');
+    _like() {
+        this._buttonElement.classList.toggle('element__button_actve');
     }
 
-    _remove(cardElement) {
-        cardElement.remove();
+    _remove() {
+        this._cardElement.remove();
+        this._cardElement = null;
+        this._imageElement = null;
+        this._deleteElement = null;
+        this._buttonElement = null;
     }
 
     _handleCardClick() {

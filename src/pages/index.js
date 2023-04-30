@@ -5,6 +5,7 @@ import PopupWithImage from '../components/PopupWithImage';
 import PopupWithForm from '../components/PopupWithForm';
 import UserInfo from '../components/UserInfo';
 import Section from '../components/Section';
+import { buttonOpenPopupCard, buttonOpenPopupProfile, initialCards, validationSettings } from '../utils/constants';
 
 const userInfo = new UserInfo('.profile__name', '.profile__job');
 
@@ -25,7 +26,6 @@ const profilePopup = new PopupWithForm({
 });
 profilePopup.setEventListeners();
 
-const buttonOpenPopupProfile = document.querySelector('.profile__edit');
 buttonOpenPopupProfile.addEventListener('click', () => profilePopup.open(userInfo.getUserInfo()));
 
 
@@ -38,46 +38,24 @@ const addCardPopup = new PopupWithForm({
 });
 addCardPopup.setEventListeners();
 
-const buttonOpenPopupCard = document.querySelector('.profile__add');
 buttonOpenPopupCard.addEventListener('click', () => addCardPopup.open());
 
 
 const section = new Section(
     {
-        items: [
-            {
-                name: 'Архыз',
-                link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-            },
-            {
-                name: 'Челябинская область',
-                link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-            },
-            {
-                name: 'Иваново',
-                link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-            },
-            {
-                name: 'Камчатка',
-                link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-            },
-            {
-                name: 'Холмогорский район',
-                link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-            },
-            {
-                name: 'Байкал',
-                link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-            }
-        ],
+        items: initialCards,
         renderer: data => {
-            const card = new Card(data, '#elementTemplate', value => previewPopup.open(value));
-            const element = card.generateCard();
+            const element = createCard(data);
             section.addItem(element);
         }
     },
     '.element__list');
 section.renderItems();
+
+function createCard(data) {
+    const card = new Card(data, '#elementTemplate', value => previewPopup.open(value));
+    return card.generateCard();
+}
 
 
 function enableValidation(settings) {
@@ -89,11 +67,4 @@ function enableValidation(settings) {
     });
 };
 
-enableValidation({
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__submit',
-    inactiveButtonClass: 'popup__submit_disabled',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible'
-});
+enableValidation(validationSettings);
