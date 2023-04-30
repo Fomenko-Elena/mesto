@@ -71,7 +71,7 @@ const section = new Section(
             }
         ],
         renderer: data => {
-            const card = new Card(data, '#elementTemplate', (name, link) => previewPopup.open(name, link));
+            const card = new Card(data, '#elementTemplate', value => previewPopup.open(value));
             const element = card.generateCard();
             section.addItem(element);
         }
