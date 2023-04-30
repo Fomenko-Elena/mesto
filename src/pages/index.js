@@ -6,9 +6,6 @@ import PopupWithForm from '../components/PopupWithForm';
 import UserInfo from '../components/UserInfo';
 import Section from '../components/Section';
 
-const buttonOpenPopupProfile = document.querySelector('.profile__edit');
-const buttonOpenPopupCard = document.querySelector('.profile__add');
-
 const userInfo = new UserInfo('.profile__name', '.profile__job');
 
 const previewPopup = new PopupWithImage({
@@ -28,6 +25,7 @@ const profilePopup = new PopupWithForm({
 });
 profilePopup.setEventListeners();
 
+const buttonOpenPopupProfile = document.querySelector('.profile__edit');
 buttonOpenPopupProfile.addEventListener('click', () => profilePopup.open(userInfo.getUserInfo()));
 
 
@@ -36,10 +34,16 @@ const addCardPopup = new PopupWithForm({
     closeButtonSelector: '.popup__close',
     formSelector: '.popup__form',
     inputSelector: '.popup__input',
-    submitFormHandler: value => addCard(value)
+    submitFormHandler: value => {
+        const element = section.renderItem(value);
+        section.addItem(element);
+    }
 });
 addCardPopup.setEventListeners();
+
+const buttonOpenPopupCard = document.querySelector('.profile__add');
 buttonOpenPopupCard.addEventListener('click', () => addCardPopup.open());
+
 
 const section = new Section(
     {
@@ -69,16 +73,13 @@ const section = new Section(
                 link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
             }
         ],
-        renderer: (data) => addCard(data, false)
+        renderer: (data) => {
+            const card = new Card(data, '#elementTemplate', (name, link) => previewPopup.open(name, link));
+            return card.generateCard();
+        }
     },
     '.element__list');
 section.renderItems();
-
-function addCard(cardData, addFirst = true) {
-    const card = new Card(cardData, '#elementTemplate', (name, link) => previewPopup.open(name, link));
-    const cardElement = card.generateCard();
-    section.addItem(cardElement, addFirst);
-}
 
 
 function enableValidation(settings) {
