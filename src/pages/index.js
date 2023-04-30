@@ -22,33 +22,20 @@ const profilePopup = new PopupWithForm({
     popupSelector: '.popup_edit-profile',
     closeButtonSelector: '.popup__close',
     formSelector: '.popup__form',
-    inputSelectorList: [
-        '.popup__input_edit_name',
-        '.popup__input_edit_job'
-    ],
-    submitFormHandler: ([name, job]) => userInfo.setUserInfo(name, job)
+    inputSelector: '.popup__input',
+    submitFormHandler: (value) => userInfo.setUserInfo(value)
 });
 profilePopup.setEventListeners();
 
-buttonOpenPopupProfile.addEventListener('click', () => {
-    const { name, job } = userInfo.getUserInfo();
-    profilePopup.open(name, job);
-});
+buttonOpenPopupProfile.addEventListener('click', () => profilePopup.open(userInfo.getUserInfo()));
 
 
 const addCardPopup = new PopupWithForm({
     popupSelector: '.popup_add-item',
     closeButtonSelector: '.popup__close',
     formSelector: '.popup__form',
-    inputSelectorList: [
-        '.popup__input_edit_name',
-        '.popup__input_edit_link'
-    ],
-    submitFormHandler: ([name, link]) => 
-        appendCardFirst({
-                name : name,
-                link : link
-            })
+    inputSelector: '.popup__input',
+    submitFormHandler: value => appendCardFirst(value)
 });
 addCardPopup.setEventListeners();
 buttonOpenPopupCard.addEventListener('click', () => addCardPopup.open());
