@@ -1,29 +1,10 @@
-export const initialCards = [
-    {
-        name: 'Архыз',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-    },
-    {
-        name: 'Челябинская область',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-    },
-    {
-        name: 'Иваново',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-    },
-    {
-        name: 'Камчатка',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-    },
-    {
-        name: 'Холмогорский район',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-    },
-    {
-        name: 'Байкал',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+export const apiSettings = {
+    baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-65',
+    headers: {
+        authorization: '9afef1e9-c180-4844-bf4b-4960d997f13a',
+        'Content-Type': 'application/json'
     }
-];
+};
 
 export const buttonOpenPopupProfile = document.querySelector('.profile__edit');
 export const buttonOpenPopupCard = document.querySelector('.profile__add');

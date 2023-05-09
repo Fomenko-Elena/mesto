@@ -3,14 +3,16 @@ import Popup from "./Popup";
 export default class PopupWithForm extends Popup {
     constructor(settings) {
         super(settings);
-        const { formSelector, inputSelector, submitFormHandler } = settings;
+        const { formSelector, inputSelector, submitButtonSelector, submitFormHandler } = settings;
         this._submitFormHandler = submitFormHandler;
         this._form = this._popup.querySelector(formSelector);
+        this._buttonElement = this._form.querySelector(submitButtonSelector);
         this._inputList = Array.from(this._form.querySelectorAll(inputSelector));
     }
 
     open(values) {
-        this._setInputValues(values || {});
+        this._data = values || {};
+        this._setInputValues(this._data);
         this._form.dispatchEvent(new Event('validateForm'));
         super.open();
     }
@@ -23,6 +25,7 @@ export default class PopupWithForm extends Popup {
     close() {
         super.close();
         this._form.reset();
+        this._data = null;
     }
 
     _setInputValues(values) {
@@ -43,8 +46,14 @@ export default class PopupWithForm extends Popup {
     _handleFormSubmit(evt) {
         evt.preventDefault();
 
-        this._submitFormHandler(this._getInputValues());
+        const originalText = this._buttonElement.textContent;
+        this._buttonElement.textContent = 'Сохранение...';
 
-        this.close();
+        const data = Object.assign(Object.assign({}, this._data), this._getInputValues());
+        this._submitFormHandler(data)
+            .finally(() => {
+                this.close();
+                this._buttonElement.textContent = originalText;
+            });
     }
 }

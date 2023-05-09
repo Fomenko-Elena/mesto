@@ -1,5 +1,8 @@
 .element__like {
-    width: 22px;
-    height: 19px;
-    cursor: pointer;
+    position: absolute;
+    right: 21px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
 }

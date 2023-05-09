@@ -6,6 +6,10 @@
 
     border-radius: 100%;
     margin: 3.75px 30.25px 3.75px 0px;
+
+    cursor: pointer;
+    min-width: 120px;
+    min-height: 120px;
 }
 
 @media screen and (max-width: 767px) {
