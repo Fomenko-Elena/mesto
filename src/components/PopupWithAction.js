@@ -3,9 +3,10 @@ import Popup from "./Popup";
 export default class PopupWithAction extends Popup {
     constructor(settings) {
         super(settings);
-        const { formSelector, submitButtonSelector } = settings;
+        const { formSelector, submitButtonSelector, actionInProgressText } = settings;
         this._form = this._popup.querySelector(formSelector);
         this._buttonElement = this._form.querySelector(submitButtonSelector);
+        this._actionInProgressText = actionInProgressText;
     }
 
     open(action) {
@@ -27,12 +28,10 @@ export default class PopupWithAction extends Popup {
         evt.preventDefault();
 
         const originalText = this._buttonElement.textContent;
-        this._buttonElement.textContent = 'Сохранение...';
+        this._buttonElement.textContent = this._actionInProgressText;
 
         this._action()
-            .finally(() => {
-                this.close();
-                this._buttonElement.textContent = originalText;
-            });
+            .then(() => this.close())
+            .finally(() => this._buttonElement.textContent = originalText);
     }
 }

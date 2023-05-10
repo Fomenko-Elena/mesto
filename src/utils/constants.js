@@ -8,6 +8,7 @@ export const apiSettings = {
 
 export const buttonOpenPopupProfile = document.querySelector('.profile__edit');
 export const buttonOpenPopupCard = document.querySelector('.profile__add');
+export const elementOpenPopupAvatar = document.querySelector('.profile__avatar');
 
 export const validationSettings = {
     formSelector: '.popup__form',
@@ -17,3 +18,10 @@ export const validationSettings = {
     inputErrorClass: 'popup__input_type_error',
     errorClass: 'popup__error_visible'
 };
+
+export const popupWithFormDefaultSelectors = {
+    closeButtonSelector: '.popup__close',
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__submit'
+} 

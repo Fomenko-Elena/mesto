@@ -1,9 +1,8 @@
 export default class UserInfo {
-    constructor(userNameSelector, userJobSelector, avatarSelector, avatarClickHandler) {
+    constructor(userNameSelector, userJobSelector, avatarSelector) {
         this._userNameElement = document.querySelector(userNameSelector);
         this._userJobElement = document.querySelector(userJobSelector);
         this._avatarElement = document.querySelector(avatarSelector);
-        this._avatarClickHandler = avatarClickHandler;
     }
 
     getUserInfo() {
@@ -19,13 +18,5 @@ export default class UserInfo {
         this._userJobElement.textContent = about;
         this._avatarElement.src = avatar;
         this._avatarElement.alt = name;
-    }
-
-    setEventListeners() {
-        this._avatarElement.addEventListener('click', () => this._handleAvatarClick());
-    }
-
-    _handleAvatarClick() {
-        this._avatarClickHandler(this.getUserInfo());
     }
 }

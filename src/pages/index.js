@@ -7,30 +7,37 @@ import PopupWithForm from '../components/PopupWithForm';
 import PopupWithAction from '../components/PopupWithAction';
 import UserInfo from '../components/UserInfo';
 import Section from '../components/Section';
-import { apiSettings, buttonOpenPopupCard, buttonOpenPopupProfile, validationSettings } from '../utils/constants';
+import { apiSettings, buttonOpenPopupCard, buttonOpenPopupProfile, elementOpenPopupAvatar, validationSettings, popupWithFormDefaultSelectors } from '../utils/constants';
 
 const api = new Api(apiSettings);
 
+const userInfo = new UserInfo(
+    '.profile__name', 
+    '.profile__job',
+    '.profile__avatar'
+);
+
+const logAndRethrowErrorHandler = error => {
+    console.error(error);
+    throw error;
+};
+
+const logErrorHandler = error => {
+    console.error(error);
+    throw error;
+};
+
 const editAvatarPopup = new PopupWithForm({
     popupSelector: '.popup_edit-avatar',
-    closeButtonSelector: '.popup__close',
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__submit',
+    ...popupWithFormDefaultSelectors,
     submitFormHandler: ({ avatar }) => api
         .updateAvatar(avatar)
         .then(data => userInfo.setUserInfo(data))
-        .catch(console.error)
+        .catch(logAndRethrowErrorHandler)
 });
 editAvatarPopup.setEventListeners();
 
-const userInfo = new UserInfo(
-    '.profile__name', 
-    '.profile__job', 
-    '.profile__avatar',
-    data => editAvatarPopup.open(data)
-);
-userInfo.setEventListeners();
+elementOpenPopupAvatar.addEventListener('click', () => editAvatarPopup.open(userInfo.getUserInfo()));
 
 const section = new Section(
     {
@@ -44,9 +51,8 @@ const section = new Section(
 
 const removeCardPopup = new PopupWithAction({
     popupSelector: '.popup_remove-item',
-    closeButtonSelector: '.popup__close',
-    formSelector: '.popup__form',
-    submitButtonSelector: '.popup__submit',
+    ...popupWithFormDefaultSelectors,
+    actionInProgressText: 'Удаление...'
 });
 removeCardPopup.setEventListeners();
 
@@ -59,30 +65,23 @@ function createCard(data) {
             handleLike: (card, like) => api 
                 .likeCard(card.getId(), like)
                 .then(cardData => card.update(cardData))
-                .catch(console.error),
+                .catch(logErrorHandler),
             handleRemove: card => removeCardPopup.open(
                 () => api
                     .removeCard(card.getId())
                     .then(() => card.remove())
-                    .catch(console.error))
+                    .catch(logAndRethrowErrorHandler))
         });
     return card.generateCard();
 }
 
-
-api
-    .getUser()
-    .then(user => {
+Promise
+    .all([api.getUser(), api.getInitialCards()])
+    .then(([user, cards]) => {
         userInfo.setUserInfo(user);
-
-        api
-            .getInitialCards()
-            .then(cards => {
-                section.renderItems(cards.map(card => Object.assign({_userId : user._id}, card)));
-            })
-        .catch(console.error)
+        section.renderItems(cards.map(card => Object.assign({_userId : user._id}, card)));
     })
-    .catch(console.error);
+    .catch(logErrorHandler);
 
 const previewPopup = new PopupWithImage({
     popupSelector: '.popup_preview',
@@ -94,14 +93,11 @@ previewPopup.setEventListeners();
 
 const profilePopup = new PopupWithForm({
     popupSelector: '.popup_edit-profile',
-    closeButtonSelector: '.popup__close',
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__submit',
+    ...popupWithFormDefaultSelectors,
     submitFormHandler: value => api
         .updateUser(value)
         .then(userData => userInfo.setUserInfo(userData))
-        .catch(console.error)
+        .catch(logAndRethrowErrorHandler)
 });
 profilePopup.setEventListeners();
 
@@ -109,14 +105,11 @@ buttonOpenPopupProfile.addEventListener('click', () => profilePopup.open(userInf
 
 const addCardPopup = new PopupWithForm({
     popupSelector: '.popup_add-item',
-    closeButtonSelector: '.popup__close',
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__submit',
+    ...popupWithFormDefaultSelectors,
     submitFormHandler: value => api
         .addCard(value)
         .then(cardData => section.renderItem(Object.assign({ _userId: cardData.owner._id}, cardData)))
-        .catch(console.error)
+        .catch(logAndRethrowErrorHandler)
 });
 addCardPopup.setEventListeners();
 

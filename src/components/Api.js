@@ -10,7 +10,6 @@ export default class Api {
     updateUser(userData) {
         return this._fetch('/users/me', {
             method: 'PATCH',
-            'Content-Type': 'application/json',
             body: JSON.stringify(userData)
         });
     }
@@ -18,7 +17,6 @@ export default class Api {
     updateAvatar(avatar) {
         return this._fetch('/users/me/avatar', {
             method: 'PATCH',
-            'Content-Type': 'application/json',
             body: JSON.stringify({ avatar : avatar})
         });
     }
@@ -30,7 +28,6 @@ export default class Api {
     addCard(cardData) {
         return this._fetch('/cards', {
             method: 'POST',
-            'Content-Type': 'application/json',
             body: JSON.stringify(cardData)
         })
     }
